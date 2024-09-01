@@ -1,8 +1,8 @@
+import { Link } from 'react-router-dom'
+
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-
-import { Link } from 'react-router-dom'
 
 export const Navbar = () => {
   return (
