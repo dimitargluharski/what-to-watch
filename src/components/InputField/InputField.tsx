@@ -1,5 +1,5 @@
 export const InputField = () => {
   return(
-    <input type="text" className="p-2 w-full" />
+    <input type="text" className="p-2 my-4 w-full" />
   )
 }
