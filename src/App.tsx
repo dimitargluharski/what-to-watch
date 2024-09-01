@@ -1,10 +1,18 @@
-import { InputField } from "./components/InputField/InputField"
+import { Route, Routes } from "react-router-dom"
+import { HomePage } from "./pages/Home/HomePage"
+import { CatalogPage } from "./pages/Catalog/CatalogPage"
+import { Navbar } from "./components/InputField/Navbar/Navbar"
 
 function App() {
   return (
-    <div className="flex justify-center bg-slate-500 p-2">
-      <InputField />
-    </div>
+    <>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
+      </Routes>
+    </>
   )
 }
 
