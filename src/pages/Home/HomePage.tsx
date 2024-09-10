@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { InputField } from "../../components/InputField/InputField";
 import { GenrePill } from "./GenrePill/GenrePill";
 import { CatalogCard } from '../Catalog/CatalogCard/CatalogCard';
+import { Pagination } from '../../components/Pagination/Pagination';
 
 export const HomePage = () => {
   const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_Read_Access_Token;
@@ -9,6 +10,8 @@ export const HomePage = () => {
   const [allGenres, setAllGenres] = useState<{ id: number; name: string }[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [movies, setMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleSelectedFilter = (genreId: number) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -25,6 +28,24 @@ export const HomePage = () => {
     setMovies([]);
   };
 
+  const fetchMovies = (page: number) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    };
+
+    fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&sort_by=popularity.desc&with_genres=${selectedGenres.join(',')}`, options)
+      .then((response) => response.json())
+      .then((response) => {
+        setMovies(response.results);
+        setTotalPages(response.total_pages);
+      })
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     const options = {
       method: 'GET',
@@ -39,13 +60,12 @@ export const HomePage = () => {
       .then((response) => setAllGenres(response.genres))
       .catch((err) => console.error(err));
 
-    fetch(`https://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc&with_genres=${selectedGenres}`, options)
-      .then(response => response.json())
-      .then(response => {
-        setMovies(response.results)
-      })
-      .catch(err => console.error(err));
-  }, [selectedGenres]);
+    fetchMovies(currentPage);
+  }, [selectedGenres, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div>
@@ -68,17 +88,26 @@ export const HomePage = () => {
         )}
       </div>
 
-      <div className='flex p-4'>
-        filters: {selectedGenres.length}
+      <div className='flex items-center bg-red-500'>
+        <div className='mr-3 text-3xl'>
+          Picked: {selectedGenres.length} {`${selectedGenres.length === 1 ? 'filter' : 'filters'}`}
+        </div>
 
-        <button className="mt-4 p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>
-          Clear Filters
-        </button>
+        <div>
+          {selectedGenres.length
+            ? (<div className="p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>Clear Filters</div>)
+            : null
+          }
+        </div>
+
       </div>
 
       {movies.map((m, index) => (
         <CatalogCard {...m} key={index} />
       ))}
+
+      {/* Pagination Component */}
+      <Pagination totalPagesCount={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
     </div>
   );
 };
