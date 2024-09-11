@@ -3,9 +3,13 @@ import { InputField } from "../../components/InputField/InputField";
 import { GenrePill } from "./GenrePill/GenrePill";
 import { CatalogCard } from '../Catalog/CatalogCard/CatalogCard';
 import { Pagination } from '../../components/Pagination/Pagination';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/ThemeContext';
 
 export const HomePage = () => {
   const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_Read_Access_Token;
+
+  const { theme, handleToggleThemes } = useContext(ThemeContext);
 
   const [allGenres, setAllGenres] = useState<{ id: number; name: string }[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
@@ -67,8 +71,11 @@ export const HomePage = () => {
     setCurrentPage(page);
   };
 
+  console.log('theme', theme);
+
   return (
-    <div>
+    <div className={`${theme === 'dark' ? 'bg-slate-900' : 'bg-slate-300'}`}>
+      <button onClick={handleToggleThemes}>Change theme!</button>
       <div className="w-full">
         <InputField />
       </div>
