@@ -4,9 +4,7 @@ import { CatalogCard } from "./CatalogCard/CatalogCard";
 import { Dropdown } from "../../components/Dropdown/Dropdown";
 
 export const CatalogPage = () => {
-  const {movies} = useFetch();
-
-  console.log('movies', movies);
+  const { movies } = useFetch();
 
   return (
     <>
