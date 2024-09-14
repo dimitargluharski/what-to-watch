@@ -1,8 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { Dropdown } from "../../components/Dropdown/Dropdown";
+import { useEffect, useState } from "react";
 import { InputField } from "../../components/InputField/InputField";
 import { CatalogCard } from "./CatalogCard/CatalogCard";
-import { GenrePill } from "../Home/GenrePill/GenrePill";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { MultiSelect } from "react-multi-select-component";
 
@@ -14,16 +12,6 @@ export const BrowseMoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  const handleSelectedFilter = (genreId: number) => {
-    setSelectedGenres((prevSelectedGenres) => {
-      if (prevSelectedGenres.includes(genreId)) {
-        return prevSelectedGenres.filter((id) => id !== genreId);
-      } else {
-        return [...prevSelectedGenres, genreId];
-      }
-    });
-  };
 
   const clearFilters = () => {
     setSelectedGenres([]);
