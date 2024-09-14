@@ -1,31 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import { Dropdown } from "../../components/Dropdown/Dropdown";
+import { useEffect, useState } from "react";
 import { InputField } from "../../components/InputField/InputField";
 import { CatalogCard } from "./CatalogCard/CatalogCard";
-import { ThemeContext } from "../../context/ThemeContext";
-import { GenrePill } from "../Home/GenrePill/GenrePill";
 import { Pagination } from "../../components/Pagination/Pagination";
+import { MultiSelect } from "react-multi-select-component";
 
 export const BrowseMoviesPage = () => {
   const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_Read_Access_Token;
-
-  const { theme, handleToggleThemes } = useContext(ThemeContext);
 
   const [allGenres, setAllGenres] = useState<{ id: number; name: string }[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  const handleSelectedFilter = (genreId: number) => {
-    setSelectedGenres((prevSelectedGenres) => {
-      if (prevSelectedGenres.includes(genreId)) {
-        return prevSelectedGenres.filter((id) => id !== genreId);
-      } else {
-        return [...prevSelectedGenres, genreId];
-      }
-    });
-  };
 
   const clearFilters = () => {
     setSelectedGenres([]);
@@ -71,61 +57,38 @@ export const BrowseMoviesPage = () => {
     setCurrentPage(page);
   };
 
+  const genreOptions = allGenres.map((g) => ({
+    label: g.name,
+    value: g.id
+  }))
+
   return (
     <>
       <div className="xl:w-full mx-auto lg:justify-center">
-        <div className="flex py-4 items-center w-full justify-between mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-          <InputField />
-          <Dropdown />
+        <div className="flex py-4 items-center w-full xl:mx-auto xl:max-w-7xl px-2 sm:px-4 lg:px-8">
+          <MultiSelect
+          className="w-96"
+            options={genreOptions}
+            // @ts-ignore
+            value={genreOptions.filter((option) => selectedGenres.includes(parseInt(option.value)))}
+            onChange={(selected: any) => setSelectedGenres(selected.map((option: any) => parseInt(option.value)))}
+            labelledBy="Select genre/s"
+          />
+          <div className="cursor-pointer">
+            {selectedGenres.length
+              ? (<div className="p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>Clear Filters</div>)
+              : null
+            }
+          </div>
         </div>
 
         <div className="flex flex-wrap py-4 justify-center gap-1 mx-auto max-w-7xl">
-          {movies.map((movie, index) => (
-            // @TODO: Fix type error
-            <CatalogCard key={index} {...movie} />
+          {movies.map((m, index) => (
+            <CatalogCard {...m} key={index} />
           ))}
         </div>
-      </div>
-      <button onClick={handleToggleThemes}>Change theme!</button>
-      <div className="w-full">
-        <InputField />
-      </div>
-
-      <div className="w-full p-2 bg-red-500">
-        {allGenres && allGenres.length > 0 ? (
-          allGenres.map((genre) => (
-            <GenrePill
-              key={genre.id}
-              genre={genre.name}
-              handleSelectedFilter={() => handleSelectedFilter(genre.id)}
-              isSelected={selectedGenres.includes(genre.id)}
-            />
-          ))
-        ) : (
-          <p>Loading genres...</p>
-        )}
-      </div>
-
-      <div className='flex items-center bg-red-500'>
-        <div className='mr-3 text-3xl'>
-          Picked: {selectedGenres.length} {`${selectedGenres.length === 1 ? 'filter' : 'filters'}`}
-        </div>
-
-        <div>
-          {selectedGenres.length
-            ? (<div className="p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>Clear Filters</div>)
-            : null
-          }
-        </div>
-
-      </div>
-
-      {movies.map((m, index) => (
-        <CatalogCard {...m} key={index} />
-      ))}
-
-      {/* Pagination Component */}
-      <Pagination totalPagesCount={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+        <Pagination totalPagesCount={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+      </div >
     </>
   )
 }
