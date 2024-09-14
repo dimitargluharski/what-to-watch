@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { NavbarDropdown } from '../Dropdown/NavbarDropdown'
 
 export const Navbar = () => {
   return (
@@ -17,7 +16,9 @@ export const Navbar = () => {
                 <Link to="/" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                   Home
                 </Link>
-               <NavbarDropdown />
+                <Link to="/movies" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                  Browse
+                </Link>
               </div>
             </div>
           </div>
