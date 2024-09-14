@@ -73,7 +73,7 @@ export const BrowseMoviesPage = () => {
       <div className="xl:w-full mx-auto lg:justify-center">
         <div className="flex py-4 items-center w-full justify-between mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <InputField />
-          <Dropdown />
+          <Dropdown genres={allGenres} />
         </div>
 
         <div>
