@@ -65,14 +65,14 @@ export const BrowseMoviesPage = () => {
   return (
     <>
       <div className="xl:w-full mx-auto lg:justify-center">
-        <div className="flex py-4 items-center w-full justify-between mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-          <InputField />
+        <div className="flex py-4 items-center w-full xl:mx-auto xl:max-w-7xl px-2 sm:px-4 lg:px-8">
           <MultiSelect
+          className="w-96"
             options={genreOptions}
             // @ts-ignore
             value={genreOptions.filter((option) => selectedGenres.includes(parseInt(option.value)))}
             onChange={(selected: any) => setSelectedGenres(selected.map((option: any) => parseInt(option.value)))}
-            labelledBy="Select genres"
+            labelledBy="Select genre/s"
           />
           <div className="cursor-pointer">
             {selectedGenres.length
