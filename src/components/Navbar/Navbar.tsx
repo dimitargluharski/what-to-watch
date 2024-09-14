@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { NavbarDropdown } from '../Dropdown/NavbarDropdown'
 
 export const Navbar = () => {
   return (
@@ -13,16 +14,10 @@ export const Navbar = () => {
             <div className="hidden lg:ml-6 lg:block">
               <div className="flex space-x-4">
                 {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                <Link to="/" className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">
+                <Link to="/" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                   Home
                 </Link>
-                <Link
-                  to="catalog"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  Catalog
-                </Link>
-                
+               <NavbarDropdown />
               </div>
             </div>
           </div>
