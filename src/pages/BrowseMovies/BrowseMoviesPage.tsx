@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { InputField } from "../../components/InputField/InputField";
 import { CatalogCard } from "./CatalogCard/CatalogCard";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { MultiSelect } from "react-multi-select-component";
@@ -65,7 +64,6 @@ export const BrowseMoviesPage = () => {
     value: g.id
   }));
 
-  // Filter movies based on the search query
   const filteredMovies = movies.filter((movie) => 
     movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -111,7 +109,6 @@ export const BrowseMoviesPage = () => {
         </div>
 
         <div className="flex flex-wrap py-4 justify-center gap-1 mx-auto max-w-7xl">
-          {/* Use filteredMovies instead of movies to display the filtered list */}
           {filteredMovies.map((m, index) => (
             <CatalogCard {...m} key={index} />
           ))}
