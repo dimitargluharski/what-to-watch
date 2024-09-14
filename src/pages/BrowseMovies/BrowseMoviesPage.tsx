@@ -4,6 +4,7 @@ import { InputField } from "../../components/InputField/InputField";
 import { CatalogCard } from "./CatalogCard/CatalogCard";
 import { GenrePill } from "../Home/GenrePill/GenrePill";
 import { Pagination } from "../../components/Pagination/Pagination";
+import { MultiSelect } from "react-multi-select-component";
 
 export const BrowseMoviesPage = () => {
   const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_Read_Access_Token;
@@ -68,43 +69,38 @@ export const BrowseMoviesPage = () => {
     setCurrentPage(page);
   };
 
+  const genreOptions = allGenres.map((g) => ({
+    label: g.name,
+    value: g.id
+  }))
+
   return (
     <>
       <div className="xl:w-full mx-auto lg:justify-center">
         <div className="flex py-4 items-center w-full justify-between mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <InputField />
-          <Dropdown genres={allGenres} />
-        </div>
-
-        <div>
-          {selectedGenres.length
-            ? (<div className="p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>Clear Filters</div>)
-            : null
-          }
-        </div>
-
-        <div className="w-full p-2">
-          {allGenres && allGenres.length > 0 ? (
-            allGenres.map((genre) => (
-              <GenrePill
-                key={genre.id}
-                genre={genre.name}
-                handleSelectedFilter={() => handleSelectedFilter(genre.id)}
-                isSelected={selectedGenres.includes(genre.id)}
-              />
-            ))
-          ) : (
-            <p>Loading genres...</p>
-          )}
-
-          <div className="flex flex-wrap py-4 justify-center gap-1 mx-auto max-w-7xl">
-            {movies.map((m, index) => (
-              <CatalogCard {...m} key={index} />
-            ))}
+          <MultiSelect
+            options={genreOptions}
+            // @ts-ignore
+            value={genreOptions.filter((option) => selectedGenres.includes(parseInt(option.value)))}
+            onChange={(selected: any) => setSelectedGenres(selected.map((option: any) => parseInt(option.value)))}
+            labelledBy="Select genres"
+          />
+          <div className="cursor-pointer">
+            {selectedGenres.length
+              ? (<div className="p-2 bg-blue-500 text-white rounded" onClick={clearFilters}>Clear Filters</div>)
+              : null
+            }
           </div>
         </div>
+
+        <div className="flex flex-wrap py-4 justify-center gap-1 mx-auto max-w-7xl">
+          {movies.map((m, index) => (
+            <CatalogCard {...m} key={index} />
+          ))}
+        </div>
         <Pagination totalPagesCount={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
-      </div>
+      </div >
     </>
   )
 }
