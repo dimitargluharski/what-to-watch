@@ -4,7 +4,7 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import { MultiSelect } from "react-multi-select-component";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-export const BrowseMoviesPage = () => {
+export const Catalog = () => {
   const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_Read_Access_Token;
 
   const [allGenres, setAllGenres] = useState<{ id: number; name: string }[]>([]);
@@ -51,7 +51,7 @@ export const BrowseMoviesPage = () => {
       .then((response) => response.json())
       .then((response) => setAllGenres(response.genres))
       .catch((err) => console.error('Error fetching genres:', err));
-    
+
     fetchMovies(currentPage);
   }, [selectedGenres, currentPage]);
 
@@ -64,7 +64,7 @@ export const BrowseMoviesPage = () => {
     value: g.id
   }));
 
-  const filteredMovies = movies.filter((movie) => 
+  const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
